@@ -31,6 +31,7 @@
                     "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/top.sls -o /srv/salt/top.sls\n",
                     "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/webserver.sls -o /srv/salt/webserver.sls\n",
                     "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/webserver/index.html -o /var/www/webserver/index.html\n",
+                    "rm /etc/nginx/sites-available/default\n",
                     "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/nginx_site.conf -o /etc/nginx/sites-available/default\n",
                     "salt-call --local state.highstate\n"
                 ]]}},
