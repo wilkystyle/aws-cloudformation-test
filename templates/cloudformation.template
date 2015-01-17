@@ -1,0 +1,111 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Parameters": {
+        "KeyPair": {
+            "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instance",
+            "Type": "AWS::EC2::KeyPair::KeyName",
+            "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+        }
+    },
+    "Resources": {
+        "MyEC2Instance": {
+            "Type": "AWS::EC2::Instance",
+            "Metadata" : {
+              "AWS::CloudFormation::Init" : {
+                "config" : {
+                  "commands" : {
+                    "1-command": {
+                        "command": "apt-get update\n"
+                    },
+                    "2-command": {
+                        "command": "apt-get -y install salt-minion\n"
+                    },
+                    "3-command": {
+                        "command": "echo \"file_client: local\" > /etc/salt/minion\n"
+                    },
+                    "3-command": {
+                        "command": "mkdir /srv/salt"
+                    },
+                    "3-command": {
+                        "command": "curl "
+                    },
+                    "3-command": {
+                        "command": "echo \"file_client: local\" > /etc/salt/minion\n"
+                    },
+                    "9-command": {
+                        "command": "service salt-minion restart"
+                    }
+                  }
+                }
+              }
+            },
+            "Properties": {
+                "InstanceType": "t1.micro",
+                "SecurityGroups": [
+                    {
+                        "Ref": "InstanceSecurityGroup"
+                    }
+                ],
+                "KeyName": {
+                    "Ref": "KeyPair"
+                },
+                "ImageId": "ami-64e27e0c"
+            }
+        },
+        "InstanceSecurityGroup": {
+            "Type": "AWS::EC2::SecurityGroup",
+            "Properties": {
+                "GroupDescription": "Enable SSH access via port 22",
+                "SecurityGroupIngress": [
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "22",
+                        "ToPort": "22",
+                        "CidrIp": "0.0.0.0/0"
+                    },
+                    {
+                        "IpProtocol": "tcp",
+                        "FromPort": "80",
+                        "ToPort": "80",
+                        "CidrIp": "0.0.0.0/0"
+                    }
+                ]
+            }
+        }
+    },
+    "Outputs": {
+        "InstanceId": {
+            "Description": "InstanceId of the newly created EC2 instance",
+            "Value": {
+                "Ref": "MyEC2Instance"
+            }
+        },
+        "AZ": {
+            "Description": "Availability Zone of the newly created EC2 instance",
+            "Value": {
+                "Fn::GetAtt": [
+                    "MyEC2Instance",
+                    "AvailabilityZone"
+                ]
+            }
+        },
+        "PublicDNS": {
+            "Description": "Public DNSName of the newly created EC2 instance",
+            "Value": {
+                "Fn::GetAtt": [
+                    "MyEC2Instance",
+                    "PublicDnsName"
+                ]
+            }
+        },
+        "PublicIP": {
+            "Description": "Public IP address of the newly created EC2 instance",
+            "Value": {
+                "Fn::GetAtt": [
+                    "MyEC2Instance",
+                    "PublicIp"
+                ]
+            }
+        }
+    }
+}
