@@ -34,9 +34,13 @@ Run the following script to create the stack, supplying the profile name from yo
 
     $ ./create.sh [PROFILE NAME] [EXISTING AWS KEYPAIR NAME]
 
-Once you have successfully created the stack, the information to access the EC2 instance will be displayed. You can access the webserver by entering the IP address in your browser. You can obtain a remote shell on the instance via SSH by issuing the following:
+Stack creation will begin. You can monitor the process with the following command:
 
-    $ ssh -i my-key-pair.pem ec2-user@my-public-ip-address
+    $ aws cloudformation describe-stacks --profile [PROFILE NAME]
+
+Once stack creation has completed, running the above command will display the public IP address for the EC2 instance. You can access the webserver by entering the IP address in your browser. You can obtain a remote shell on the instance via SSH by issuing the following:
+
+    $ ssh -i my-key-pair.pem ubuntu@my-public-ip-address
 
 When you are finished, you can delete the stack by running the following script, supplying the profile name from your AWS config file:
 

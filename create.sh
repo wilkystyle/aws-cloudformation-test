@@ -17,4 +17,6 @@ fi
 # Create the stack.
 aws cloudformation create-stack --stack-name aws-webserver-test --template-body "file://$TEMPLATE_FILE" --profile $1 --parameter "ParameterKey=KeyPair,ParameterValue=$2"
 # Display info about the stack.
-aws cloudformation describe-stacks --profile $1
+echo "Stack creation started! You can view more information about the stack via the following command:"
+echo ""
+echo "    aws cloudformation describe-stacks --profile $1"
