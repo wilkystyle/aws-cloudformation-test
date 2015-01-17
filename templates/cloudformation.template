@@ -14,27 +14,39 @@
               "AWS::CloudFormation::Init" : {
                 "config" : {
                   "commands" : {
-                    "1-command": {
-                        "command": "apt-get update\n"
+                    "a": {
+                        "command": "apt-get update"
                     },
-                    "2-command": {
-                        "command": "apt-get -y install salt-minion\n"
+                    "b": {
+                        "command": "apt-get -y install salt-minion"
                     },
-                    "3-command": {
-                        "command": "echo \"file_client: local\" > /etc/salt/minion\n"
+                    "c": {
+                        "command": "echo \"file_client: local\" > /etc/salt/minion"
                     },
-                    "3-command": {
-                        "command": "mkdir /srv/salt"
+                    "d": {
+                        "command": "service salt-minion restart"
                     },
-                    "3-command": {
+                    "e": {
+                        "command": "mkdir -p /srv/salt"
+                    },
+                    "f": {
+                        "command": "mkdir -p /var/www/webserver"
+                    },
+                    "g": {
                         "command": "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/top.sls -o /srv/salt/top.sls"
                     },
-                    "3-command": {
+                    "h": {
                         "command": "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/webserver.sls -o /srv/salt/webserver.sls"
                     },
-                    "9-command": {
-                        "command": "service salt-minion restart"
-                    }
+                    "i": {
+                        "command": "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/webserver/index.html -o /var/www/webserver/index.html"
+                    },
+                    "j": {
+                        "command": "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/nginx_site.conf -o /srv/salt/nginx_site.conf"
+                    },
+                    "k": {
+                        "command": "salt-call --local state.highstate"
+                    },
                   }
                 }
               }
@@ -74,38 +86,9 @@
         }
     },
     "Outputs": {
-        "InstanceId": {
-            "Description": "InstanceId of the newly created EC2 instance",
-            "Value": {
-                "Ref": "MyEC2Instance"
-            }
-        },
-        "AZ": {
-            "Description": "Availability Zone of the newly created EC2 instance",
-            "Value": {
-                "Fn::GetAtt": [
-                    "MyEC2Instance",
-                    "AvailabilityZone"
-                ]
-            }
-        },
-        "PublicDNS": {
-            "Description": "Public DNSName of the newly created EC2 instance",
-            "Value": {
-                "Fn::GetAtt": [
-                    "MyEC2Instance",
-                    "PublicDnsName"
-                ]
-            }
-        },
-        "PublicIP": {
-            "Description": "Public IP address of the newly created EC2 instance",
-            "Value": {
-                "Fn::GetAtt": [
-                    "MyEC2Instance",
-                    "PublicIp"
-                ]
-            }
+        "PublicIP" : {
+          "Description" : "Public IP address of the newly created EC2 instance",
+          "Value" : { "Fn::GetAtt" : [ "MyEC2Instance", "PublicIp" ] }
         }
     }
 }
