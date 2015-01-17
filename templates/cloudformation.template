@@ -27,10 +27,10 @@
                         "command": "mkdir /srv/salt"
                     },
                     "3-command": {
-                        "command": "curl "
+                        "command": "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/top.sls -o /srv/salt/top.sls"
                     },
                     "3-command": {
-                        "command": "echo \"file_client: local\" > /etc/salt/minion\n"
+                        "command": "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/webserver.sls -o /srv/salt/webserver.sls"
                     },
                     "9-command": {
                         "command": "service salt-minion restart"
