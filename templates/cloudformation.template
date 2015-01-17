@@ -32,7 +32,8 @@
                     "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/webserver.sls -o /srv/salt/webserver.sls\n",
                     "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/webserver/index.html -o /var/www/webserver/index.html\n",
                     "salt-call --local state.highstate\n",
-                    "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/nginx_site.conf > /etc/nginx/sites-available/default\n"
+                    "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/nginx_site.conf > /etc/nginx/sites-available/default\n",
+                    "sudo nginx -s reload"
                 ]]}},
                 "ImageId": "ami-64e27e0c"
             }
