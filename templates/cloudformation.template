@@ -5,6 +5,10 @@
             "Description": "Name of an existing EC2 KeyPair to enable SSH access to the instance",
             "Type": "AWS::EC2::KeyPair::KeyName",
             "ConstraintDescription": "must be the name of an existing EC2 KeyPair."
+        },
+        "EmailAddress": {
+            "Description": "An email address to send a completion message to, when provisioning and setup is complete.",
+            "Type": "String"
         }
     },
     "Resources": {
@@ -12,14 +16,8 @@
             "Type": "AWS::EC2::Instance",
             "Properties": {
                 "InstanceType": "t1.micro",
-                "SecurityGroups": [
-                    {
-                        "Ref": "InstanceSecurityGroup"
-                    }
-                ],
-                "KeyName": {
-                    "Ref": "KeyPair"
-                },
+                "SecurityGroups": [ { "Ref": "InstanceSecurityGroup" } ],
+                "KeyName": { "Ref": "KeyPair" },
                 "UserData"       : { "Fn::Base64" : { "Fn::Join" : ["", [
                     "#!/bin/bash -v\n",
                     "apt-get update\n",
@@ -33,7 +31,9 @@
                     "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/webserver/index.html -o /var/www/webserver/index.html\n",
                     "salt-call --local state.highstate\n",
                     "curl https://raw.githubusercontent.com/wilkystyle/aws-cloudformation-test/master/salt/nginx_site.conf > /etc/nginx/sites-available/default\n",
-                    "sudo nginx -s reload"
+                    "sudo service nginx reload\n",
+                    "apt-get install -y sendmail bsd-mailx\n",
+                    "echo \"EC2 instance ready! Public IP: $(curl http://169.254.169.254/latest/meta-data/public-ipv4)\" | mail -s \"AWS provisioning complete!\" ", { "Ref": "EmailAddress" }, " \n"
                 ]]}},
                 "ImageId": "ami-64e27e0c"
             }

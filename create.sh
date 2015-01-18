@@ -5,18 +5,15 @@ TEMPLATE_FILE="./templates/cloudformation.template"
 display_usage() {
     echo ""
     echo "usage:"
-    echo "$0 [PROFILE NAME] [EXISTING AWS KEYPAIR NAME]"
+    echo "$0 [PROFILE NAME] [EXISTING AWS KEYPAIR NAME] [EMAIL ADDRESS]"
+    echo "(An email will be sent to the address you provide, once provisioning and setting up the instance has been completed)"
     echo ""
 }
 
-if [ "$#" -ne 2 ]; then
+if [ "$#" -ne 3 ]; then
     display_usage;
     exit
 fi
 
 # Create the stack.
-aws cloudformation create-stack --stack-name aws-webserver-test --template-body "file://$TEMPLATE_FILE" --profile $1 --parameter "ParameterKey=KeyPair,ParameterValue=$2"
-# Display info about the stack.
-echo "Stack creation started! You can view more information about the stack via the following command:"
-echo ""
-echo "    aws cloudformation describe-stacks --profile $1"
+aws cloudformation create-stack --stack-name aws-webserver-test --template-body "file://$TEMPLATE_FILE" --profile $1 --parameter ParameterKey=KeyPair,ParameterValue=$2 ParameterKey=EmailAddress,ParameterValue=$3 && echo "Stack creation started! You will receive an email at $3 when this process has completed!"
