@@ -32,13 +32,15 @@ You will need to create an EC2 KeyPair in the AWS console to use. This will allo
 
 Run the following script to create the stack, supplying the profile name from your AWS config file:
 
-    $ ./create.sh [PROFILE NAME] [EXISTING AWS KEYPAIR NAME]
+    $ ./create.sh [PROFILE NAME] [EXISTING AWS KEYPAIR NAME] [EMAIL ADDRESS]
 
 Stack creation will begin. You can monitor the process with the following command:
 
     $ aws cloudformation describe-stacks --profile [PROFILE NAME]
 
-Once stack creation has completed, running the above command will display the public IP address for the EC2 instance. You can access the webserver by entering the IP address in your browser. You can obtain a remote shell on the instance via SSH by issuing the following:
+Once stack creation has completed, an email will be sent to the email address you provide, stating that the process has completed, and providing the IP address at which you can access the EC2 instance (be sure to check your spam folder)!
+
+You can access the webserver by entering the IP address in your browser. You can obtain a remote shell on the instance via SSH by issuing the following:
 
     $ ssh -i my-key-pair.pem ubuntu@my-public-ip-address
 
